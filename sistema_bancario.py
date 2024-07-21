@@ -1,51 +1,67 @@
-saldo_bancario = 0.0
-opcao = 0
-print("Bem-vindo ao site do banco brasesquio")
-numero_de_saque_diario = 0
-LIMITE_DIARIO = 3
-LIMITE = 500.0
+class Cadastro_conta_bancaria:
+   _numero_conta = 0
+   _agencia_conta = 0
+   _usuario_conta = ""
 
-while True:
-    print("\n")
-    print("1- Depósito")
-    print("2- Saque")
-    print("3- Extrato bancário")
-    print("4- Encerrar sistema")
-    opcao = int(input("Escolha umas das opções disponíveis: "))
-    
+   def __init__(self, numero_conta, agencia_conta, usuario_conta):
+      self._numero_conta = numero_conta
+      self._agencia_conta = agencia_conta
+      self.usuario_conta = usuario_conta
 
-    if(opcao == 1):
-        saldo_bancario += float (input("Insira o valor a ser depositado: "))
+   def get_numero_conta(self):
+      return self._numero_conta
+   
+   def get_numero_conta(self):
+      return self._agencia_conta
+   
+   def get_usuario_conta(self):
+      return self._usuario_conta
+   
+   def set_usuario_conta(self, usuario_conta):
+      self._usuario_conta = usuario_conta
 
-        while(saldo_bancario <= 0):
-            print("Insira um valor válido")
-            saldo_bancario = float (input("Informe o valor a ser depositado: "))
+class Cadastro_chave_pix:
+   #cadatrar  chave do usuario e chave de contatos salvos do usuario
+   chave_pix = "Rafael - 15632165818"
 
-    elif(opcao == 2):
 
-        saque = float (input("Insira o valor para saque: "))
+class Operacoes_bancarias(Cadastro_conta_bancaria, Cadastro_chave_pix):
+   
+   _saldo_bancario = 0.0
+   _historico_transacoes = []
 
-        if(saque > saldo_bancario):
-            print(f"Saldo insuficiente, saldo atual R$ {saldo_bancario:.2f}")
+   def __init__(self, _saldo_bancario):
+      self._saldo_bancario += _saldo_bancario
 
-        elif(saque > LIMITE):
-                print(f"Você só pode realizar saques de até R$ {LIMITE:.2f} reais.")
+   def get_saldo_bancario(self):
+      return self._saldo_bancario
 
-        elif(numero_de_saque_diario == LIMITE_DIARIO):
-            print("Limite de saque diário atingido")
+   def get_historico_transacoes(self):
+      return self._historico_transacoes
 
-        else:
-            saldo_bancario -= saque
-            numero_de_saque_diario += 1
-            print(f"Saque realizado com sucesso. saldo atual: R$ {saldo_bancario}")
 
-    elif(opcao == 3):
-        print(f"Saldo atual da conta: R$ {saldo_bancario:.2f}")
+   def depositar(self, valor_depositado):
+      self._saldo_bancario += valor_depositado
 
-    elif(opcao == 4):
-        print("Sistema encerrado!")
-        break
-        
-    else:
-        print("Comando incorreto")
+   def sacar(self, valor_sacado):
+      if valor_sacado <= self._saldo_bancario:
+         self._saldo_bancario -= valor_sacado
+         self._historico_transacoes.append(valor_sacado)
+      else:
+         print(f"Não foi possível concluir seu saque, saldo atual {self._saldo_bancario}")
 
+   def mostrar_saldo_bancario(self):
+      print(f"Seu saldo atual é de R$ {self._saldo_bancario}")
+   
+   def mostrar_hisotrico_transacoes(self):
+      print("Histórico de Transações")
+      for historico in self._historico_transacoes:
+         print(historico)
+
+
+
+operacao_bancaria = Operacoes_bancarias(5000.5)
+operacao_bancaria.sacar(50)
+operacao_bancaria.sacar(100)
+
+operacao_bancaria.mostrar_hisotrico_transacoes()
